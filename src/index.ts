@@ -101,9 +101,9 @@ async function getPolicyStates(cred: AzureCliCredential, resourceIds: string[]) 
       ) {
         if (policyState.isCompliant)
         {
-          core.info(`Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tIs Compliant: ${policyState.isCompliant}`);
+          console.log('\x1b[32m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tIs Compliant: ${policyState.isCompliant}`);
         } else {
-          core.error(`Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tIs Compliant: ${policyState.isCompliant}`);
+          console.log('\x1b[31m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tIs Compliant: ${policyState.isCompliant}`);
         }
       }
     }
