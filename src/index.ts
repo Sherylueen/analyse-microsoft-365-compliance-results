@@ -18,7 +18,7 @@ async function start() {
     const resourceIds = await getResourceIdsByDeployment(cred, subscriptionId, resourceGroupName, deploymentName);
     if (updateReport)
     {
-      console.log("Updating report...");
+      console.log("Updating report......");
     }
     await createOrUpdateReport(cred, reportName, resourceIds);
     await getPolicyStates(cred, resourceIds);
