@@ -107,7 +107,9 @@ async function getPolicyStates(cred: AzureCliCredential, resourceIds: string[]) 
         {
           console.log('\x1b[32m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tCompliant`);
         } else {
-          console.log('\x1b[31m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tNon-compliant\thttps://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F0015ea4d-51ff-4ce3-8d8c-f3f8f0179a56`);
+          const pureId = policyState.policyDefinitionId?.split("/")[policyState.policyDefinitionId?.split("/").length - 1] ?? "null";
+          var url = `https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F${pureId}`;
+          console.log('\x1b[31m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tNon-compliant\tUrl: ${url}`);
         }
       }
     }

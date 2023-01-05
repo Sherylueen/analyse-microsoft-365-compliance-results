@@ -4,6 +4,9 @@ inputs:
   report-name:
     description: 'name of the compliance report'
     required: true
+  create-or-update-report:
+    description: 'bool value whether customer want us to help them to create or update the report'
+    required: true
   deployment-name:
     description: 'deployment name'
     required: true
