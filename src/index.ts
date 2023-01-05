@@ -96,6 +96,7 @@ async function getPolicyStates(cred: AzureCliCredential, resourceIds: string[]) 
   const lowerCaseResourceIds = resourceIds.map(id => id.toLocaleLowerCase());
   for (const client of clients) {
     const iter = client.policyStates.listQueryResultsForSubscription("default", client.subscriptionId);
+    var policyIdSet = new Set<string>();
 
     for await (let policyState of iter) {
       const resourceId = policyState.resourceId ?? "";
@@ -103,6 +104,10 @@ async function getPolicyStates(cred: AzureCliCredential, resourceIds: string[]) 
         isRealTimePolicy(policyState.policyDefinitionId ?? "") &&
         lowerCaseResourceIds.includes(resourceId.toLocaleLowerCase())
       ) {
+        if (policyIdSet.has(policyState.policyDefinitionId ?? "")) {
+          continue;
+        }
+        policyIdSet.add(policyState.policyDefinitionId ?? "");
         if (policyState.isCompliant)
         {
           console.log('\x1b[32m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tCompliant`);

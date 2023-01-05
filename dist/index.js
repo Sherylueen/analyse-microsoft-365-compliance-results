@@ -114,7 +114,7 @@ function createOrUpdateReport(cred, reportName, resourceIds) {
 }
 function getPolicyStates(cred, resourceIds) {
     var _a, e_1, _b, _c;
-    var _d, _e, _f, _g;
+    var _d, _e, _f, _g, _h, _j;
     return __awaiter(this, void 0, void 0, function* () {
         const subscriptionSet = new Set();
         for (const id of resourceIds) {
@@ -136,34 +136,39 @@ function getPolicyStates(cred, resourceIds) {
         const lowerCaseResourceIds = resourceIds.map(id => id.toLocaleLowerCase());
         for (const client of clients) {
             const iter = client.policyStates.listQueryResultsForSubscription("default", client.subscriptionId);
+            var policyIdSet = new Set();
             try {
-                for (var _h = true, iter_1 = (e_1 = void 0, __asyncValues(iter)), iter_1_1; iter_1_1 = yield iter_1.next(), _a = iter_1_1.done, !_a;) {
+                for (var _k = true, iter_1 = (e_1 = void 0, __asyncValues(iter)), iter_1_1; iter_1_1 = yield iter_1.next(), _a = iter_1_1.done, !_a;) {
                     _c = iter_1_1.value;
-                    _h = false;
+                    _k = false;
                     try {
                         let policyState = _c;
                         const resourceId = (_d = policyState.resourceId) !== null && _d !== void 0 ? _d : "";
                         if (isRealTimePolicy((_e = policyState.policyDefinitionId) !== null && _e !== void 0 ? _e : "") &&
                             lowerCaseResourceIds.includes(resourceId.toLocaleLowerCase())) {
+                            if (policyIdSet.has((_f = policyState.policyDefinitionId) !== null && _f !== void 0 ? _f : "")) {
+                                continue;
+                            }
+                            policyIdSet.add((_g = policyState.policyDefinitionId) !== null && _g !== void 0 ? _g : "");
                             if (policyState.isCompliant) {
                                 console.log('\x1b[32m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tCompliant`);
                             }
                             else {
-                                const pureId = (_g = (_f = policyState.policyDefinitionId) === null || _f === void 0 ? void 0 : _f.split("/")[4]) !== null && _g !== void 0 ? _g : "null";
+                                const pureId = (_j = (_h = policyState.policyDefinitionId) === null || _h === void 0 ? void 0 : _h.split("/")[4]) !== null && _j !== void 0 ? _j : "null";
                                 var nonCompliantPolicyUrl = `https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F${pureId}`;
                                 console.log('\x1b[31m%s\x1b[0m', `Resource Id: ${resourceId}\tDefinition Id: ${policyState.policyDefinitionId}\tNon-compliant\tUrl: ${nonCompliantPolicyUrl}`);
                             }
                         }
                     }
                     finally {
-                        _h = true;
+                        _k = true;
                     }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (!_h && !_a && (_b = iter_1.return)) yield _b.call(iter_1);
+                    if (!_k && !_a && (_b = iter_1.return)) yield _b.call(iter_1);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
