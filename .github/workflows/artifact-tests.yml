@@ -32,10 +32,11 @@ jobs:
         parameters: storageAccountType=Standard_LRS
     - run: echo ${{ steps.deploybicep.outputs.deploymentName }}
 
-    - name: analyse Microsoft 365 compliance results
+    - name: ACAT get quick assessment
       uses: ./ # Uses an action in the root directory
       with:
         report-name: 'test-report'
+        create-or-update-report: true
         deployment-name: ${{ steps.deployarm.outputs.deploymentName }}
         subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
         resource-group: ${{ secrets.RESOURCE_GROUP}}
