@@ -13,9 +13,13 @@ async function start() {
     const resourceGroupName = core.getInput('resource-group');
     const subscriptionId = core.getInput('subscription-id');
     const reportName = core.getInput('report-name');
+    const updateReport = core.getInput('create-or-update-report');
 
     const resourceIds = await getResourceIdsByDeployment(cred, subscriptionId, resourceGroupName, deploymentName);
-
+    if (updateReport)
+    {
+      console.log("Updating report...");
+    }
     await createOrUpdateReport(cred, reportName, resourceIds);
     await getPolicyStates(cred, resourceIds);
   } catch (error) {
