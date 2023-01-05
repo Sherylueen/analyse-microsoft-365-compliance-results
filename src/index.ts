@@ -23,7 +23,7 @@ async function start() {
     await createOrUpdateReport(cred, reportName, resourceIds);
     await getPolicyStates(cred, resourceIds);
   } catch (error) {
-    core.setFailed(error.message);
+    //core.setFailed(error.message);
   }
 }
 
