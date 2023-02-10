@@ -55,9 +55,9 @@
         }
     ],
     "outputs": {
-        "deploymentName": {
+        "deploymentId": {
             "type": "string",
-            "value": "[deployment().name]"
+            "value": "[resourceId('Microsoft.Resources/deployments',deployment().name)]"
         }
     }
 }

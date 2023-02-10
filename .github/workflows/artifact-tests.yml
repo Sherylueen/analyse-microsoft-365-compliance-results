@@ -20,7 +20,7 @@ jobs:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
         template: ./deploy/Storage.template.json
         parameters: storageAccountType=Standard_LRS
-    - run: echo ${{ steps.deployarm.outputs.deploymentName }}
+    - run: echo ${{ steps.deployarm.outputs.deploymentId }}
 
     - name: Deploy with bicep
       id: deploybicep
@@ -30,13 +30,13 @@ jobs:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
         template: ./deploy/Storage.bicep
         parameters: storageAccountType=Standard_LRS
-    - run: echo ${{ steps.deploybicep.outputs.deploymentName }}
+    - run: echo ${{ steps.deploybicep.outputs.deploymentId }}
 
     - name: ACAT get quick assessment
-      uses: ./ # Uses an action in the root directory
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         report-name: 'test-report'
-        create-or-update-report: true
-        deployment-name: ${{ steps.deployarm.outputs.deploymentName }}
-        subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
-        resource-group: ${{ secrets.RESOURCE_GROUP}}
+        deployment-ids: '[
+        "${{ steps.deployarm.outputs.deploymentId }}",
+        "${{ steps.deploybicep.outputs.deploymentId}}"
+        ]'
